@@ -44,15 +44,20 @@ public class MinhaPrimeiraTelinha extends javax.swing.JFrame {
 
         jTextFieldNome.addActionListener(this::jTextFieldNomeActionPerformed);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jLabel1.setText("Nome");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jLabel2.setText("Endereço");
 
+        jTextFieldEndereco.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         jTextFieldEndereco.addActionListener(this::jTextFieldEnderecoActionPerformed);
 
+        jButtonSalvar.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jButtonSalvar.setText("Salvar");
         jButtonSalvar.addActionListener(this::jButtonSalvarActionPerformed);
 
+        jButtonPreencherAutomatico.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jButtonPreencherAutomatico.setText("Preencher Automatico");
         jButtonPreencherAutomatico.addActionListener(this::jButtonPreencherAutomaticoActionPerformed);
 
@@ -73,7 +78,7 @@ public class MinhaPrimeiraTelinha extends javax.swing.JFrame {
                                 .addComponent(jButtonSalvar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonPreencherAutomatico)))
-                        .addGap(0, 153, Short.MAX_VALUE)))
+                        .addGap(0, 60, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -87,7 +92,7 @@ public class MinhaPrimeiraTelinha extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jTextFieldEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSalvar)
                     .addComponent(jButtonPreencherAutomatico))
