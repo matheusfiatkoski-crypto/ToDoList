@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package todolist;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -69,6 +68,7 @@ public class TelaToDoList extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTableTaarefas);
 
         jButtonConcluirTarefa.setText("Concluir");
+        jButtonConcluirTarefa.addActionListener(this::jButtonConcluirTarefaActionPerformed);
 
         jButtonRemoverTarefa.setText("Remover");
         jButtonRemoverTarefa.addActionListener(this::jButtonRemoverTarefaActionPerformed);
@@ -128,7 +128,7 @@ public class TelaToDoList extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButtonRemoverTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverTarefaActionPerformed
-        int linhaSelecionada = jTableTaarefas.getSelectedRow();
+                int linhaSelecionada = jTableTaarefas.getSelectedRow();
         
         if (linhaSelecionada < 0){
             JOptionPane.showMessageDialog(null, "Nenhuma tarefa foi selecionada");
@@ -140,15 +140,15 @@ public class TelaToDoList extends javax.swing.JFrame {
         
         String tarefaSelecionada = recuperarTarefa(linhaSelecionada);
         
-        int indicieTarefaSelecionada = tarefas.indexOf(tarefaSelecionada);
+        int indiceTarefaSelecionada = tarefas.indexOf(tarefaSelecionada);
         
         if (opcao == JOptionPane.YES_OPTION) {
             tarefas.remove(indiceTarefaSelecionada);
-            preencherTabela();
+//            preencherTabela();
         }
         filtrarTabela();
         
-        preencherTabela();        
+//        preencherTabela();
     }//GEN-LAST:event_jButtonRemoverTarefaActionPerformed
     private void filtrarTabela(){
         int opcao = jComboBox1.getSelectedIndex();
@@ -156,16 +156,18 @@ public class TelaToDoList extends javax.swing.JFrame {
         
         String[] dados;
         
-        for(String tarefas : tarefas){
-            dados = tarefas.split(";");
+        for(String tarefa : tarefas){
+            dados = tarefa.split(";");
             
             switch (opcao) {
                 case 0:
-                    tarefasFiltradas.add(tarefas);
+                    tarefasFiltradas.add(tarefa);
                     break;
                 case 1:
                     if (dados[1].equals(CONCLUIDA)){
-                        tarefasFiltradas.add(tarefas);
+                        tarefasFiltradas.add(tarefa);
+                    }
+                    break;
                 case 2: 
                     if (dados[1].equals(NAO_CONCLUIDA)) {
                     tarefasFiltradas.add(tarefa);
@@ -174,7 +176,7 @@ public class TelaToDoList extends javax.swing.JFrame {
                     }
             }
         }
-}
+
     private String recuperarTarefa(int indiceTarefa){
         if (jComboBox1.getSelectedIndex() > 0){
             return tarefasFiltradas.get(indiceTarefa);
@@ -187,8 +189,46 @@ public class TelaToDoList extends javax.swing.JFrame {
     }
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-                                       
+         if (jTextFieldDescricaoTarefa.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "A descrição da tarefa não pode ser vazia!");
+            return;
+        }
+
+        if (hasTarefaRepetida(jTextFieldDescricaoTarefa.getText())){
+            JOptionPane.showMessageDialog(null, "A tarefa " + jTextFieldDescricaoTarefa.getText() + " já existe!");
+            return;
+        }
+
+        tarefas.add(jTextFieldDescricaoTarefa.getText() + ";" + NAO_CONCLUIDA);
+
+//        preencherTabela();
+
+        jTextFieldDescricaoTarefa.setText("");
+        
+                                        
     }//GEN-LAST:event_jButton3ActionPerformed
+       
+    private void jButtonConcluirTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConcluirTarefaActionPerformed
+        int linhaSelecionada = jTableTaarefas.getSelectedRow();
+        
+        if (linhaSelecionada < 0){
+            JOptionPane.showMessageDialog(null, "Nenhuma tarefa foi selecionada!");
+            return;
+        }
+        
+        String tarefaSelecionada = recuperarTarefa (linhaSelecionada);
+        
+        
+        int indiceTarefaSelecionada = tarefas.indexOf(tarefaSelecionada);
+        
+        String[] dados = tarefas.get(indiceTarefaSelecionada).split(";");
+        
+        tarefas.set(indiceTarefaSelecionada, dados[0] + ";" + CONCLUIDA);
+        
+        filtrarTabela();
+        
+//        preencherTabela();
+    }//GEN-LAST:event_jButtonConcluirTarefaActionPerformed
 
     public boolean hasTarefaRepetida (String novaTarefa) {
         for (String tarefa : tarefas){
