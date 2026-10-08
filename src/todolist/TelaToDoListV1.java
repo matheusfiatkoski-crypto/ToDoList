@@ -4,6 +4,9 @@
  */
 package todolist;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,6 +41,10 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
         model.setRowCount(0);
         
         setTitle("LISTA DE TAREFAS V2!");
+        
+        carregarTarefa();
+        preencherTabela();
+        atualizarEstatisticas();
     }
 
     /**
@@ -212,6 +219,8 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
         
         tarefas.add(jTextFieldDescricaoTarefa.getText() + ";" + NAO_CONCLUIDA + ";" + dataAtual.format(formato));
         
+        salvarTarefa();
+        
         preencherTabela();
         
         jTextFieldDescricaoTarefa.setText("");
@@ -232,6 +241,10 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
         String[] dados = tarefas.get(indiceTarefaSelecionada).split(";");
         
         tarefas.set(indiceTarefaSelecionada, dados[0] + ";" + CONCLUIDA + ";" + dados[2]);
+        
+        salvarTarefa();
+        
+        atualizarEstatisticas();
         
         filtrarTabela();
         
@@ -263,6 +276,8 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
             
             preencherTabela();
         }
+        
+        salvarTarefa();
         
         filtrarTabela();
         
@@ -344,6 +359,9 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
     }
     private void atualizarEstatisticas(){
         jTextFieldTotal.setText(Integer.toString(tarefas.size()));
+        
+        jTextFieldConcluidas.setText(String.valueOf(retornarTotalConcluidas()));
+        jTextFieldNaoConcluidas.setText(String.valueOf(retornarTotalConcluidas()));
     }
     
     private int retornarTotalConcluidas() {
@@ -356,9 +374,56 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
                 quantidadeConcluida++;
             }
         }
+        return quantidadeConcluida;
+    }
+
+    private int retornarTotalNaoConcluidas() {
+        int quantidadeNaoConcluida = 0;
+        
+        for(String tarefa : tarefas){
+            String[] dados = tarefa.split(";");
+            
+            if (dados[1].equals(NAO_CONCLUIDA)){
+                quantidadeNaoConcluida++;
+            }
+        }
+        return quantidadeNaoConcluida;
     }
     
+    private void salvarTarefa() {
+        try{
+            
+            FileWriter arquivo = new FileWriter("tarefas.txt");
+            
+            for(String tarefa : tarefas){
+                arquivo.write(tarefa + "\n");
+            }
+            arquivo.close();
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar o arquivo");
+            
+        }
+        
+    }
+    
+    private void carregarTarefa () {
+        try{
+            BufferedReader arquivo = new BufferedReader(
+                new FileReader("tarefas.txt")
+            );
+            
+            String tarefa;
+            
+            while((tarefa = arquivo.readLine()) != null) {
+            tarefas.add(tarefa);
+        }
+            
+            arquivo.close();
+        }catch(Exception e){
+        }
+    }
     /**
+     * 
      * @param args the command line arguments
      */
     public static void main(String args[]) {
