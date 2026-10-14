@@ -81,11 +81,11 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tarefa", "Status", "DATA"
+                "Tarefa", "Status", "DATA", "Data de Conclusão"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -163,7 +163,7 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextFieldDescricaoTarefa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -189,7 +189,7 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxFiltroStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -233,7 +233,9 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Nenhuma tarefa foi selecionada!");
             return;
         }
-        
+        LocalDateTime dataAtual = LocalDateTime.now();
+         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataConclusao = dataAtual.format(formatador);
         String tarefaSelecionada = recuperarTarefa(linhaSelecionada);
         
         int indiceTarefaSelecionada = tarefas.indexOf(tarefaSelecionada);
@@ -297,11 +299,15 @@ public class TelaToDoListV1 extends javax.swing.JFrame {
         
         for (String tarefa : listaTarefas){
             String[] dados = tarefa.split(";");
-
+        String dataFim = "";
+        if (dados.length > 3) {
+            dataFim = dados[3];
+        }
             model.addRow(new Object[]{
                 dados[0],
                 dados[1],
-                dados[2]
+                dados[2],
+                dataFim
             });
         }
     }
